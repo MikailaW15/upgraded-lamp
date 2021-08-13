@@ -1,29 +1,72 @@
-var generateBtn = document.querySelector("#generate");
-var useUppercase = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"]
-var useLowercase = ["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"]
-var useSpecial =  ["!", "@", "#", "%", "^", "&", "+", "-", "/", "?", "|", "<", ">"]
-var useNumbers = [0,1,2,3,4,5,6,7,8,9]
-var passwordLength = prompt("Please chose between 8 and 128 charachters")
-var upperCase = confirm("Do you want uppercase characters?")
-var lowercase = confirm("Do you want lowercase characters?")
-var Special = confirm("Do you want special characters?")
-var Numbers = confirm("Do you want number characters?")
-var finalCharacters = []
-
-var Flatfinalcharacters = (finalCharacters.flat())
-var password = []
-  var passwordText = document.querySelector("#password");
-  console.log(useUppercase[index])
-  for (var i = 0; i < passwordLength; i++) 
-    { var index = Math.floor(Math.random() * useuppercase.length) 
-    console.log(useUppercase[index])
-    passwordText.value += useuppercase[index] }
-  //push random and save in password variable
-// Write password to the #password input
-function writePassword() {
-  var password = generatePassword();
-  var passwordText = document.querySelector("#password");
-  passwordText.value = password;
+const characterAmountRange = document.getElementById('characterAmountRange')
+const characterAmountNumber = document.getElementById('characterAmountNumber')
+//-------------------------------------------------------------------------------------------------------------------------------------
+const includeUppercaseElement = document.getElementById('includeUpperCase')
+const includeLowercaseElement = document.getElementById('includeLowerCase')
+const includeNumbersElement   = document.getElementById('includeNumbers')
+const includeSymbolsElement   = document.getElementById('includeSymbols')
+//-------------------------------------------------------------------------------------------------------------------------------------
+const form = document.getElementById('passwordGeneratorForm')
+const passwordDisplay = document.getElementById('passwordDisplay')
+//-------------------------------------------------------------------------------------------------------------------------------------
+const UPPERCASE_CHAR_CODES = arrayFromlowToHigh(65, 90)
+const LOWERCASE_CHAR_CODES = arrayFromlowToHigh(97, 122)
+const SYMBOL_CHAR_CODES = arrayFromlowToHigh(33, 47)
+const NUMBER_CHAR_CODES = arrayFromlowToHigh(48, 57)
+//-------------------------------------------------------------------------------------------------------------------------------------
+characterAmountNumber.addEventListener('input', syncCharacterAmount)
+characterAmountRange.addEventListener('input', syncCharacterAmount)
+//-------------------------------------------------------------------------------------------------------------------------------------
+form.addEventListener('submit', e => {
+    e.preventDefault()
+    const includeLowercase = includeLowercaseElement.checked
+    const characterAmount = characterAmountNumber.value
+    const includeUppercase = includeUppercaseElement.checked
+    const includeSymbols = includeSymbolsElement.checked
+    const includeNumbers = includeNumbersElement.checked
+    const password = generatePassword(characterAmount, includeUppercase, includeLowercase, includeSymbols, includeNumbers)
+    passwordDisplay.innerText = password
+})
+//-------------------------------------------------------------------------------------------------------------------------------------
+function syncCharacterAmount(e) {
+    const value = e.target.value
+    characterAmountNumber.value = value
+    characterAmountRange.value = value
 }
-// Add event listener to generate button
-//generateBtn.addEventListener("click", writePassword);
+//-------------------------------------------------------------------------------------------------------------------------------------
+function generatePassword(characterAmount, includeUppercase,includeLowercase, includeNumbers, includeSymbols) {
+    console.log(characterAmount, includeUppercase, includeLowercase, includeNumbers, includeSymbols)
+    let charCodes = [] 
+    const passwordCharacters = []
+
+    if (includeUppercase){ 
+        charCodes = charCodes.concat(UPPERCASE_CHAR_CODES)
+        passwordCharacters.push(String.fromCharCode(UPPERCASE_CHAR_CODES[Math.floor(Math.random()*UPPERCASE_CHAR_CODES.length)]))
+    }
+    if (includeLowercase){ 
+        charCodes = charCodes.concat(LOWERCASE_CHAR_CODES)
+        passwordCharacters.push(String.fromCharCode(LOWERCASE_CHAR_CODES[Math.floor(Math.random()*LOWERCASE_CHAR_CODES.length)]))}
+    if (includeSymbols) {
+        charCodes = charCodes.concat(SYMBOL_CHAR_CODES)
+        passwordCharacters.push(String.fromCharCode(SYMBOL_CHAR_CODES[Math.floor(Math.random()*SYMBOL_CHAR_CODES.length)]))
+    }
+    if (includeNumbers) {
+        charCodes = charCodes.concat(NUMBER_CHAR_CODES)
+        passwordCharacters.push(String.fromCharCode(NUMBER_CHAR_CODES[Math.floor(Math.random()*NUMBER_CHAR_CODES.length)]))
+    }
+    console.log(passwordCharacters)
+    for (let i = passwordCharacters.length; i < characterAmount; i++) {
+        const characterCode = charCodes[Math.floor(Math.random() * charCodes.length)]
+        passwordCharacters.push(String.fromCharCode(characterCode))
+    } 
+    console.log(passwordCharacters)
+    return passwordCharacters.join('') 
+}
+//-------------------------------------------------------------------------------------------------------------------------------------
+function arrayFromlowToHigh(low, high) {
+    const array = []
+    for (let i = low; i <= high; i++) {
+        array.push(i)
+    }
+    return array
+}
