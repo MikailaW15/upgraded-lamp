@@ -6,7 +6,7 @@ body {
   justify-content: center;
   align-items: center;
   margin: 0;
-  font-family: Georgia, 'Times New Roman', Times, serif;
+  font-family: cursive;
 }
 .container {
   background-color: white;
@@ -60,6 +60,7 @@ border-radius: .5rem;
   font-weight: bold;
   cursor: pointer;
   border-radius: 1rem;
+  font-family: cursive;
 }
 .btn:hover {
   background-color: green;
